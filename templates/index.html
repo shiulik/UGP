@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive 3D Molecule Viewer</title>
+
+  <!-- Tailwind (UI) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- JSmol (3D molecules) -->
+  <script type="text/javascript" src="https://chemapps.stolaf.edu/jmol/jsmol/JSmol.min.js"></script>
+
+  <!-- Chart.js + zoom plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body class="bg-gray-100 text-gray-800 flex justify-center min-h-screen">
+  <div class="p-4 md:p-8 w-full">
+    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 flex flex-col min-h-screen pb-16">
+      
+      <div class="text-center mb-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Interactive 3D Molecule Viewer</h1>
+        <p class="text-gray-500 mt-2">Select a molecule to visualize its 3D structure.</p>
+      </div>
+
+      <div class="flex-1 flex gap-6">
+        <!-- LEFT: Chart -->
+        <div class="w-3/5 flex flex-col">
+          <div class="chart-header mb-3">
+            <div class="chart-title-container">
+              <h3 class="chart-title text-lg font-semibold text-gray-900">
+                Free Energy Scatter (ID vs ΔG)
+              </h3>
+            </div>
+            <div class="plot-type-dropdown">
+              <button id="plotTypeBtn" class="icon-btn" aria-haspopup="true" aria-expanded="false" title="Choose plot type">⋯</button>
+              <ul id="plotTypeMenu" class="menu" role="menu" aria-labelledby="plotTypeBtn">
+                <li role="menuitem" data-plot="scatter">Scatter</li>
+                <li role="menuitem" data-plot="bar">Bar</li>
+                <!-- You can add more items later: line, hist, etc. -->
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <canvas id="moleculeChart" class="w-full" style="min-height:720px;"></canvas>
+          </div>
+        </div>
+
+        <!-- RIGHT: Viewer + details -->
+        <div class="w-2/5 flex flex-col">
+          <div class="mb-4 flex flex-col items-center">
+            <label for="molecule-select" class="block text-sm font-medium text-gray-700 mb-2">Choose a Molecule:</label>
+            <select id="molecule-select" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
+              <option>Loading molecules...</option>
+            </select>
+          </div>
+
+          <div id="viewer-container" class="bg-gray-900 rounded-lg border border-gray-200 shadow-inner" style="aspect-ratio: 1 / 1;"></div>
+
+          <div id="molecule-details" class="mt-8 bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Molecule Details</h3>
+            <div id="details-content" class="text-sm text-gray-600">
+              <p class="text-gray-500 italic">Select a molecule to view details</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- App bootstrapping (ES modules) -->
+  <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
